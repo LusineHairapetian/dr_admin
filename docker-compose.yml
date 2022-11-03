@@ -1,0 +1,27 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:13.4
+    ports:
+      - 5432:5432
+    volumes:
+      - ./volumes/postgres:/var/lib/postgresql/data
+    environment:
+     - POSTGRES_USER=dr_admin
+     - POSTGRES_PASSWORD=password
+     - POSTGRES_DB=dr_admin
+  phoenix:
+    build:
+      context: .
+    container_name: dr_admin
+    environment:
+      POSTGRES_USER: 'dr_admin'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'dr_admin'
+      DATABASE_URL: 'postgresql://dr_admin:password@postgres/dr_admin?connect_timeout=300'
+    ports:
+      - '4000:4000'
+    command: mix phx.server
+    depends_on:
+      - postgres

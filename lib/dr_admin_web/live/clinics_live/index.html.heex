@@ -1,0 +1,43 @@
+<h1>Listing Clinics</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.clinic_index_path(@socket, :index)}>
+    <.live_component
+      module={DrAdminWeb.ClinicLive.FormComponent}
+      id={@clinic.id || :new}
+      title={@page_title}
+      action={@live_action}
+      clinic={@clinic}
+      return_to={Routes.clinic_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Address</th>
+      <th>Phone number</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="clinics">
+    <%= for clinic <- @clinics do %>
+      <tr id={"clinic-#{clinic.id}"}>
+        <td><%= clinic.name %></td>
+        <td><%= clinic.address %></td>
+        <td><%= clinic.phone_number %></td>
+
+        <td>
+          <span><%= live_redirect "Show", to: Routes.clinic_show_path(@socket, :show, clinic) %></span>
+          <span><%= live_patch "Edit", to: Routes.clinic_index_path(@socket, :edit, clinic) %></span>
+          <span><%= link "Delete", to: "#", phx_click: "delete", phx_value_id: clinic.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<span><%= live_patch "New Clinic", to: Routes.clinic_index_path(@socket, :new) %></span>

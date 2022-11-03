@@ -1,0 +1,36 @@
+<h1>Show Clinic</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.clinic_show_path(@socket, :show, @clinic)}>
+    <.live_component
+      module={DrAdminWeb.ClinicLive.FormComponent}
+      id={@clinic.id}
+      title={@page_title}
+      action={@live_action}
+      clinic={@clinic}
+      return_to={Routes.clinic_show_path(@socket, :show, @clinic)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @clinic.name %>
+  </li>
+
+  <li>
+    <strong>Address:</strong>
+    <%= @clinic.address %>
+  </li>
+
+  <li>
+    <strong>Phone number:</strong>
+    <%= @clinic.phone_number %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.clinic_show_path(@socket, :edit, @clinic), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.clinic_index_path(@socket, :index) %></span>

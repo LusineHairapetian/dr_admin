@@ -1,0 +1,46 @@
+<h1>Show Practitioner</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.practitioner_show_path(@socket, :show, @practitioner)}>
+    <.live_component
+      module={DrAdminWeb.PractitionerLive.FormComponent}
+      id={@practitioner.id}
+      title={@page_title}
+      action={@live_action}
+      practitioner={@practitioner}
+      return_to={Routes.practitioner_show_path(@socket, :show, @practitioner)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @practitioner.name %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @practitioner.description %>
+  </li>
+
+  <li>
+    <strong>Specialty:</strong>
+    <%= @practitioner.specialty.name %>
+  </li>
+
+  <li>
+    <strong>Clinic:</strong>
+    <%= @practitioner.clinic.name %>
+  </li>
+
+  <li>
+    <strong>Phone number:</strong>
+    <%= @practitioner.phone_number %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.practitioner_show_path(@socket, :edit, @practitioner), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.practitioner_index_path(@socket, :index) %></span>
